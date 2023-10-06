@@ -10,19 +10,27 @@ const Registration = () => {
         </span>
         <span className="opacity-75">It’s quick and easy.</span>
       </div>
-      <TextField name="name" type="text" id="name" label="Your name" />
-      <TextField name="email" type="email" id="outlined-basic" label="Email" />
+      <TextField name="name" type="text" id="name" label="Your name" required />
+      <TextField
+        name="email"
+        type="email"
+        id="outlined-basic"
+        label="Email"
+        required
+      />
       <TextField
         name="password"
         type="password"
         id="outlined-basic"
         label="Password"
+        required
       />
       <TextField
         name="password"
         type="password"
         id="outlined-basic"
         label="Re-enter password"
+        required
       />
       <Button size="large" variant="contained">
         Sign Up

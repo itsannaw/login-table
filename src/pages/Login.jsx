@@ -8,12 +8,19 @@ const Login = () => {
       <span className="text-[40px] text-center font-weight font-semibold">
         Login
       </span>
-      <TextField name="email" type="email" id="outlined-basic" label="Email" />
+      <TextField
+        name="email"
+        type="email"
+        id="outlined-basic"
+        label="Email"
+        required
+      />
       <TextField
         name="password"
         type="password"
         id="outlined-basic"
         label="Password"
+        required
       />
       <Button
         size="large"
