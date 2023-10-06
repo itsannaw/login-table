@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import NotFound from "./pages/NotFound";
-import Table from "./pages/Table";
+import AdminTable from "./pages/Table";
 
 const App = () => {
   return (
@@ -10,7 +10,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
-        <Route path="/admin-table" element={<Table />} />
+        <Route path="/admin-table" element={<AdminTable />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
