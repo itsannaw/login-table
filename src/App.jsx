@@ -8,7 +8,7 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} errorElement={<NotFound />} />
+        <Route path="/" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/admin-table" element={<AdminTable />} />
         <Route path="*" element={<NotFound />} />
