@@ -3,33 +3,29 @@ import { DataGrid } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const columns = [
   { field: "id", headerName: "ID", width: 100 },
-  { field: "Name", headerName: "Full name", width: 180 },
-  { field: "Email", headerName: "Email", width: 180 },
-  { field: "Registration", headerName: "Registration", width: 180 },
-  { field: "Login", headerName: "Login", width: 180 },
-  { field: "Status", headerName: "Status", width: 180 },
-];
-
-const rows = [
-  {
-    id: 1,
-    Name: "Snow",
-    Email: "blabla@mail.ru",
-    Registration: 35,
-    Login: 5,
-    Status: 1,
-  },
-  { id: 2, Name: "Snow", Email: "Jon", Registration: 35, Login: 5, Status: 1 },
-  { id: 3, Name: "Snow", Email: "Jon", Registration: 35, Login: 5, Status: 1 },
-  { id: 4, Name: "Snow", Email: "Jon", Registration: 35, Login: 5, Status: 1 },
-  { id: 5, Name: "Snow", Email: "Jon", Registration: 35, Login: 5, Status: 1 },
-  { id: 10, Name: "Snow", Email: "Jon", Registration: 35, Login: 5, Status: 1 },
+  { field: "full_name", headerName: "Full name", width: 180 },
+  { field: "email", headerName: "Email", width: 180 },
+  { field: "created_at", headerName: "Registration", width: 180 },
+  { field: "login_at", headerName: "Login", width: 180 },
+  { field: "blocked", headerName: "Status", width: 180 },
 ];
 
 const AdminTable = () => {
+  const [rows, setRows] = useState([]);
+  const onMount = async () => {
+    const { data } = await axios.get("http://localhost:3000/users");
+    setRows(data);
+  };
+
+  useEffect(() => {
+    onMount();
+  }, []);
+
   return (
     <div className="flex flex-col justify-between mx-auto">
       <div className="flex justify-end items-center gap-[50px] mr-[20px] mt-[20px]">
