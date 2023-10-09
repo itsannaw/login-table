@@ -1,4 +1,4 @@
-import { Button, Link as LinkBase, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -8,17 +8,11 @@ const Login = () => {
       <span className="text-[40px] text-center font-weight font-semibold">
         Login
       </span>
-      <TextField
-        name="email"
-        type="email"
-        id="outlined-basic"
-        label="Email"
-        required
-      />
+      <TextField name="email" type="email" id="email" label="Email" required />
       <TextField
         name="password"
         type="password"
-        id="outlined-basic"
+        id="password"
         label="Password"
         required
       />
@@ -30,9 +24,9 @@ const Login = () => {
         Log In
       </Button>
 
-      <LinkBase className="text-center">
-        <Link to="/registration">Don`t have an account? Register here.</Link>
-      </LinkBase>
+      <Link className="text-[#1976d2] text-center underline" to="/registration">
+        Don`t have an account? Register here.
+      </Link>
     </div>
   );
 };

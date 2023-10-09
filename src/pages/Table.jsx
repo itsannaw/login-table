@@ -18,7 +18,11 @@ const columns = [
 const AdminTable = () => {
   const [rows, setRows] = useState([]);
   const onMount = async () => {
-    const { data } = await axios.get("http://localhost:3000/users");
+    const { data } = await axios.get("http://localhost:3000/users", {
+      headers: {
+        Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiMzY4MjRiMy1jMTMxLTQ1NWUtYWRhNi0wMmEwNWQ4MjNkYWMiLCJzdWIiOiI0NCIsInNjcCI6InVzZXIiLCJhdWQiOm51bGwsImlhdCI6MTY5Njg4MTAxOSwiZXhwIjoxNjk2ODgyODE5fQ.tjVveUTlrQazsK7D66wZJM1FykDnarShS2xT_TPRnxQ"
+      }
+    });
     setRows(data);
   };
 
