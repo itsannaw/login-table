@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import globalRouter from "../router/globalRouter";
 
 const config = {
-  baseURL: "http://localhost:3000/",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
 };
 const api = axios.create(config);
 export const unauthorizedApi = axios.create(config);
