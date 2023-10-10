@@ -4,7 +4,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/http";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   { field: "id", headerName: "ID", width: 100 },
@@ -17,12 +19,9 @@ const columns = [
 
 const AdminTable = () => {
   const [rows, setRows] = useState([]);
+  const navigate = useNavigate();
   const onMount = async () => {
-    const { data } = await axios.get("http://localhost:3000/users", {
-      headers: {
-        Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJiMzY4MjRiMy1jMTMxLTQ1NWUtYWRhNi0wMmEwNWQ4MjNkYWMiLCJzdWIiOiI0NCIsInNjcCI6InVzZXIiLCJhdWQiOm51bGwsImlhdCI6MTY5Njg4MTAxOSwiZXhwIjoxNjk2ODgyODE5fQ.tjVveUTlrQazsK7D66wZJM1FykDnarShS2xT_TPRnxQ"
-      }
-    });
+    const { data } = await api.get("users");
     setRows(data);
   };
 
@@ -30,10 +29,18 @@ const AdminTable = () => {
     onMount();
   }, []);
 
+  const logout = () => {
+    Cookies.remove("token");
+    navigate("/");
+  };
+
   return (
     <div className="flex flex-col justify-between mx-auto">
       <div className="flex justify-end items-center gap-[50px] mr-[20px] mt-[20px]">
-        <span>Hello, name!</span> <Button variant="text">Log out</Button>
+        <span>Hello, name!</span>{" "}
+        <Button variant="text" onClick={logout}>
+          Log out
+        </Button>
       </div>
       <div className="flex flex-col justify-center border max-w-[1400px] mx-auto border-sky-950 p-[15px] mt-[30px] rounded-lg shadow-lg shadow-blue-500/50">
         <div className="flex justify-center items-center mt-[5px]">

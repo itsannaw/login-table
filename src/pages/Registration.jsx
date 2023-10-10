@@ -1,7 +1,7 @@
 import { Button, TextField } from "@mui/material";
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { unauthorizedApi } from "../api/http";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ const Registration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await axios.post("http://localhost:3000/signup", {
+    await unauthorizedApi.post("signup", {
       user: {
         full_name: fullName,
         email,
