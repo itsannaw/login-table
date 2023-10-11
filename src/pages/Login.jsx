@@ -1,8 +1,9 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { unauthorizedApi } from "../api/http";
+import { LoadingButton } from "@mui/lab";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,8 +11,11 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorText, setErrorText] = useState("");
 
   const handleChange = (e) => {
+    setErrorText("");
     setCredentials({
       ...credentials,
       [e.target.name]: e.target.value,
@@ -22,17 +26,22 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await unauthorizedApi.post("login", {
         user: credentials,
       });
       const token = response.headers.get("Authorization");
       console.log(token, response);
-      // Store the tokens in localStorage or secure cookie for later use
       Cookies.set("token", token);
+      setIsLoading(false);
       navigate("/admin-table");
-      // Redirect or perform other actions upon successful login
     } catch (error) {
-      // Handle login error
+      console.log(error);
+      if (error.response?.data.error) {
+        setErrorText(error.response.data.error);
+      }
+      console.error(error);
+      setIsLoading(false);
     }
   };
 
@@ -49,6 +58,7 @@ const Login = () => {
         required
         value={credentials.email}
         onChange={handleChange}
+        error={!!errorText}
       />
       <TextField
         name="password"
@@ -58,10 +68,17 @@ const Login = () => {
         required
         value={credentials.password}
         onChange={handleChange}
+        error={!!errorText}
       />
-      <Button size="large" variant="contained" onClick={handleSubmit}>
+      <div className="text-red-500 text-[15px] font-semibold">{errorText}</div>
+      <LoadingButton
+        size="large"
+        variant="contained"
+        onClick={handleSubmit}
+        loading={isLoading}
+      >
         Log In
-      </Button>
+      </LoadingButton>
       <Link className="text-[#1976d2] text-center underline" to="/registration">
         Don`t have an account? Register here.
       </Link>
