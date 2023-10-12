@@ -8,17 +8,7 @@ import api from "../api/http";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-
-function getDateTime(dateStr) {
-  const date = new Date(dateStr);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
-}
+import getDateTime from "../components/GetDateTime";
 
 const columns = [
   { field: "id", headerName: "ID", width: 100 },
@@ -42,7 +32,15 @@ const columns = [
     field: "blocked",
     headerName: "Status",
     width: 180,
-    renderCell: (params) => <>{params.value ? "Blocked" : "Not blocked"}</>,
+    renderCell: (params) => (
+      <>
+        {params.value ? (
+          <span className="text-red-700">Blocked</span>
+        ) : (
+          <span className="text-green-800">Not blocked</span>
+        )}
+      </>
+    ),
   },
 ];
 
@@ -64,7 +62,6 @@ const AdminTable = () => {
   }, []);
 
   const logout = () => {
-    setIsLoading(true);
     Cookies.remove("token");
     navigate("/");
   };
@@ -75,7 +72,6 @@ const AdminTable = () => {
 
   const onBlock = async () => {
     try {
-      console.log(selectedIds);
       const { data } = await api.post("users/block", {
         users_ids: selectedIds,
       });
@@ -87,7 +83,6 @@ const AdminTable = () => {
 
   const onUnblock = async () => {
     try {
-      console.log(selectedIds);
       const { data } = await api.post("users/unblock", {
         users_ids: selectedIds,
       });
@@ -99,7 +94,6 @@ const AdminTable = () => {
 
   const onDelete = async () => {
     try {
-      console.log(selectedIds);
       const { data } = await api.post("users/delete", {
         users_ids: selectedIds,
       });

@@ -9,12 +9,14 @@ const App = () => {
   const navigate = useNavigate();
   globalRouter.navigate = navigate;
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/registration" element={<Registration />} />
-      <Route path="/admin-table" element={<AdminTable />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/registration" element={<Registration />} />
+        <Route path="/admin-table" element={<AdminTable />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 };
 

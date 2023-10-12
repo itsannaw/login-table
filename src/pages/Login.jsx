@@ -31,12 +31,10 @@ const Login = () => {
         user: credentials,
       });
       const token = response.headers.get("Authorization");
-      console.log(token, response);
       Cookies.set("token", token);
       setIsLoading(false);
       navigate("/admin-table");
     } catch (error) {
-      console.log(error);
       if (error.response?.data.error) {
         setErrorText(error.response.data.error);
       }
