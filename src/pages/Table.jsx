@@ -8,63 +8,28 @@ import api from "../api/http";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { LoadingButton } from "@mui/lab";
-import getDateTime from "../components/GetDateTime";
-
-const columns = [
-  { field: "id", headerName: "ID", width: 100 },
-  { field: "full_name", headerName: "Full name", width: 180 },
-  { field: "email", headerName: "Email", width: 180 },
-  {
-    field: "created_at",
-    headerName: "Registration",
-    width: 180,
-    renderCell: (params) => <>{getDateTime(params.value)}</>,
-  },
-  {
-    field: "login_at",
-    headerName: "Login",
-    width: 180,
-    renderCell: (params) => (
-      <>{params.value ? getDateTime(params.value) : "Was not logged yet"}</>
-    ),
-  },
-  {
-    field: "blocked",
-    headerName: "Status",
-    width: 180,
-    renderCell: (params) => (
-      <>
-        {params.value ? (
-          <span className="text-red-700">Blocked</span>
-        ) : (
-          <span className="text-green-800">Not blocked</span>
-        )}
-      </>
-    ),
-  },
-];
+import ColumnsTable from "../components/ColumnsTable";
 
 const AdminTable = () => {
   const [rows, setRows] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [name, setName] = useState([]);
   const navigate = useNavigate();
+
   const onMount = async () => {
     setIsLoading(true);
     const { data } = await api.get("users");
 
     setRows(data);
+    await getUserName();
     setIsLoading(false);
   };
 
   useEffect(() => {
     onMount();
   }, []);
-
-  const logout = () => {
-    Cookies.remove("token");
-    navigate("/");
-  };
 
   const onSelection = (ids) => {
     setSelectedIds(ids);
@@ -103,11 +68,43 @@ const AdminTable = () => {
     }
   };
 
+  const getUserName = async () => {
+    try {
+      const { data } = await api.get("users/name_users");
+      setName(data || []);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLogoutLoading(true);
+      await api.delete("logout");
+      setTimeout(() => {
+        Cookies.remove("token");
+        setLogoutLoading(false);
+        navigate("/");
+      }, 1000);
+    } catch (error) {
+      console.error(error);
+      setLogoutLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-between mx-auto">
       <div className="flex justify-end items-center gap-[50px] mr-[20px] mt-[20px]">
-        <span>Hello, name!</span>{" "}
-        <LoadingButton variant="text" onClick={logout}>
+        <span onChange={getUserName}>
+          Hello, <b>{name}</b>!
+        </span>{" "}
+        <LoadingButton
+          variant="text"
+          onClick={handleSubmit}
+          loading={logoutLoading}
+        >
           Log out
         </LoadingButton>
       </div>
@@ -147,7 +144,7 @@ const AdminTable = () => {
         >
           <DataGrid
             rows={rows}
-            columns={columns}
+            columns={ColumnsTable}
             checkboxSelection
             slots={{
               loadingOverlay: LinearProgress,
